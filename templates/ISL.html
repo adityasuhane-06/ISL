@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <title>Sign Sarthi - Indian Sign Language Detection Platform</title>
 
   <!-- Bootstrap core CSS -->
@@ -16,7 +17,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-tale-seo-agency.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
-  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/isl.css') }}">
 
 </head>
@@ -68,20 +69,17 @@
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
             <a href="/" class="logo">
-              <img src="assets/images/logo.png" alt="" style="max-width: 112px;">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="" style="max-width: 112px;">
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
-              <li class="scroll-to-section"><a href="/" class="active">Home</a></li>
-              <li class="scroll-to-section"><a href="/isl">ISL</a></li>
-
-              <li class="scroll-to-section"><a href="http://localhost:8501/">NFSL</a></li>
-
-              
-              <li class="scroll-to-section"><a href="http://127.0.0.1:1000/">Text converter</a></li>
-              
-              <li class="scroll-to-section"><a href="#">Community</a></li>
+              <li class="scroll-to-section"><a href="index.html" class="active">Home</a></li>
+              <li class="scroll-to-section"><a href="ISL.html">ISL</a></li>
+              <li class="scroll-to-section"><a href="#projects">NFSL</a></li>
+              <li class="scroll-to-section"><a href="#">Text</a></li>
+              <li class="scroll-to-section"><a href="#about">About</a></li>
+              <li class="scroll-to-section"><a href="#infos">Community</a></li>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -94,38 +92,69 @@
   </header>
   <main>
 
-<div class="main" id="main">
-    <div class="video">
+    <div class="main" id="main">
+      <div class="video">
 
-      <img id="videoElement" src="/video" alt="Video feed">
+        <img id="videoElement" src="/video" alt="Video feed">
+
+
+
+      </div>
+
+
+      <div class="button-text">
+        <p class="pretext">Predicted Text:<span id="predictedText"></span></textarea>
+
+
+          <!-- Dropdown for Translation Languages -->
+
+
+
+
+<!-- Translated Text Display -->
+<div id="translatedTextContainer">
+  <p class="pretext">Translated Text: <span id="translatedText"></span></p>
+</div>
+
+
+        <div class="buttons">
+
+          <button class="button" id="bt1" onclick="clearLastCharacter()">Clear Last Character</button>
+          <button class="button" id="bt2" onclick="speakSentence()">Speak Sentence</button>
+          <button class="button" id="bt3" onclick="clearSentence()">Clear Sentence</button>
+         
+          <!-- Button to trigger translation -->
+          <button id="translateBtn" class="button">
+            Translate
+            <select id="languageSelect" style="margin-left: 5px; border: none; background-color: transparent; font-size: 16px;">
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="bn">Bengali</option>
+              <option value="te">Telugu</option>
+              <option value="ta">Tamil</option>
+              <option value="ml">Malayalam</option>
+              <option value="gu">Gujarati</option>
+              <option value="kn">Kannada</option>
+              <option value="pa">Punjabi</option>
+            </select>
+          </button>
+
+
+          <button class="button" id="bt4" onclick="addspace()">Space</button>
+        </div>
+
+      </div>
+
+
+
+
+
+
 
 
 
     </div>
-
-
-    <div class="button-text">
-      <p>Predicted Text: <span id="predictedText"></span></p>
-
-     <div class="buttons">
-      
-    <button class="button" id="bt1" onclick="clearLastCharacter()">Clear Last Character</button>
-      <button class="button" id="bt2"onclick="speakSentence()" >Speak Sentence</button>
-      <button class="button" id="bt3"  onclick="clearSentence()">Clear Sentence</button>
-      <button class="button" id="bt4"onclick="addspace()"  >Space</button></div> 
-      
-
-
-      
-    </div>
-
-
-
-
-
-
-  </div>
-</main>
+  </main>
 
 
   <!-- Scripts -->
@@ -141,22 +170,56 @@
 
 
 
+
+
+
   <script>
-// Select all buttons with the class 'button'
-const buttons = document.querySelectorAll(".button");
+    // Select all buttons with the class 'button'
+    const buttons = document.querySelectorAll(".button");
 
-// Add an event listener to each button
-buttons.forEach((button) => {
-  button.addEventListener("click", (e) => {
-    e.preventDefault();
-    button.classList.add("animate");
+    // Add an event listener to each button
+    buttons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        button.classList.add("animate");
 
-    // Remove the animation class after 600ms
-    setTimeout(() => {
-      button.classList.remove("animate");
-    }, 600);
+        // Remove the animation class after 600ms
+        setTimeout(() => {
+          button.classList.remove("animate");
+        }, 600);
+      });
+    });
+
+  
+    document.addEventListener("DOMContentLoaded", () => {
+  const predictedTextElement = document.getElementById('predictedText');
+  const translatedTextElement = document.getElementById('translatedText');
+  const translateBtn = document.getElementById('translateBtn');
+  const languageSelect = document.getElementById('languageSelect');
+  const translatedTextContainer = document.getElementById('translatedTextContainer');
+  // Translation functionality integrated with the button
+  translateBtn.addEventListener("click", () => {
+    const textToTranslate = predictedTextElement.textContent.trim();
+    const targetLang = languageSelect.value;
+
+    if (!textToTranslate) return;
+
+    // API call for translation
+    const apiUrl = `https://api.mymemory.translated.net/get?q=${textToTranslate}&langpair=en|${targetLang}`;
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const translatedText = data.responseData.translatedText;
+        translatedTextElement.textContent = translatedText;
+        
+      })
+      .catch(error => {
+        console.error("Error fetching translation:", error);
+      });
   });
 });
+
 
   </script>
 
@@ -164,49 +227,50 @@ buttons.forEach((button) => {
 
 
 
-<script>
-  const predictedTextElement = document.getElementById('predictedText');
 
-    
-        function updatePredictedText() {
-            fetch('/get_predicted_text')
-                .then(response => response.json())
-                .then(data => {
-                    predictedTextElement.textContent = data.predicted_text;
-                });
-        }
+  <script>
+    const predictedTextElement = document.getElementById('predictedText');
 
-        // Function to clear the entire sentence
-        function clearSentence() {
-            fetch('/clear_sentence', { method: 'POST' })
-                .then(response => response.json())
-                .then(() => {
-                    updatePredictedText();
-                });
-        }
 
-        // Function to clear the last character of the predicted text
-        function clearLastCharacter() {
-            fetch('/clear_last_character', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    predictedTextElement.textContent = data.predicted_text;
-                });
-        }
+    function updatePredictedText() {
+      fetch('/get_predicted_text')
+        .then(response => response.json())
+        .then(data => {
+          predictedTextElement.textContent = data.predicted_text;
+        });
+    }
 
-        // Function to send a request to speak the sentence
-        function speakSentence() {
-            fetch('/speak_sentence', { method: 'POST' });
-        }
+    // Function to clear the entire sentence
+    function clearSentence() {
+      fetch('/clear_sentence', { method: 'POST' })
+        .then(response => response.json())
+        .then(() => {
+          updatePredictedText();
+        });
+    }
 
-        // Function to add a space in the predicted text
-        function addspace() {
-            fetch('/add_space', { method: 'POST' });
-        }
+    // Function to clear the last character of the predicted text
+    function clearLastCharacter() {
+      fetch('/clear_last_character', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          predictedTextElement.textContent = data.predicted_text;
+        });
+    }
 
-        // Periodically update the predicted text every second
-        setInterval(updatePredictedText, 1000);
-    </script>
+    // Function to send a request to speak the sentence
+    function speakSentence() {
+      fetch('/speak_sentence', { method: 'POST' });
+    }
+
+    // Function to add a space in the predicted text
+    function addspace() {
+      fetch('/add_space', { method: 'POST' });
+    }
+
+    // Periodically update the predicted text every second
+    setInterval(updatePredictedText, 1000);
+  </script>
 
 
 

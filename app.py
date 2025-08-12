@@ -12,7 +12,7 @@ import time
 import pyttsx3
 warnings.filterwarnings("ignore")
 import speech_recognition as sr
-from moviepy.editor import VideoFileClip
+from moviepy import VideoFileClip
 
 
 

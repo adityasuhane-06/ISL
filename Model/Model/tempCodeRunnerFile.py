@@ -1,0 +1,1 @@
+image=cv2.flip(image,1)
