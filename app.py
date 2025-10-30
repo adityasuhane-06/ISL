@@ -10,6 +10,7 @@ import pandas as pd
 import warnings
 import time 
 import pyttsx3
+import hashlib
 warnings.filterwarnings("ignore")
 import speech_recognition as sr
 from moviepy import VideoFileClip
@@ -224,27 +225,20 @@ def audio_to_ISL():
 
 
 # Text to ISL conversion functions
-def character_to_video(text):
-    """Convert text characters to video"""
+def character_to_slideshow(text):
+    """Return list of image paths for slideshow"""
     image_folder = 'static/images'
     images = []
     
     for char in text:
-        image_path = os.path.join(image_folder, f"{char}.jpg")
-        if os.path.exists(image_path):
+        image_path = f"images/{char}.jpg"  # Relative path for browser
+        full_path = os.path.join('static', image_path)
+        if os.path.exists(full_path):
             images.append(image_path)
         else:
             print(f"No image found for character: {char}")
     
-    if images:
-        # Use a unique filename based on the current timestamp
-        unique_filename = f"char_video_{int(time.time())}.mp4"
-        video_path = os.path.join('static/videos', unique_filename)
-        clip = ImageSequenceClip(images, fps=1)  # Adjust FPS as needed
-        clip.write_videofile(video_path, codec='libx264')
-        return video_path
-    
-    return None
+    return images if images else None
 
 
 def gesture_to_video(text):
@@ -275,21 +269,24 @@ def text_to_isl():
 
 @app.route('/convert', methods=['POST'])
 def convert_text_to_isl():
-    """Convert text to ISL video"""
+    """Convert text to ISL video or slideshow"""
     text = request.json.get('text', '')
     level = request.json.get('level', '')
 
     if level == "character":
-        video_path = character_to_video(text.lower())
+        images = character_to_slideshow(text.lower())
+        if images:
+            return jsonify({"images": images, "type": "slideshow"})
+        else:
+            return jsonify({"error": "No matching images found for the given text"}), 404
     elif level == "gesture":
         video_path = gesture_to_video(text.lower())
+        if video_path:
+            return jsonify({"video_path": video_path, "type": "video"})
+        else:
+            return jsonify({"error": "No matching video found for the given text"}), 404
     else:
         return jsonify({"error": "Invalid conversion level"}), 400
-    
-    if video_path:
-        return jsonify({"video_path": video_path})
-    else:
-        return jsonify({"error": "No matching video or images found for the given text"}), 404
 
 
 
