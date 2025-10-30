@@ -25,11 +25,11 @@ gcloud run deploy $SERVICE_NAME `
   --platform managed `
   --region $REGION `
   --allow-unauthenticated `
-  --memory 2Gi `
-  --cpu 2 `
+  --memory 4Gi `
+  --cpu 4 `
+  --min-instances 1 `
   --timeout 300s `
   --max-instances 10 `
-  --min-instances 0
 
 Write-Host "`n=== Deployment Complete! ===" -ForegroundColor Green
 Write-Host "Your application URL:" -ForegroundColor Cyan

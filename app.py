@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response,jsonify,request
+from flask import Flask, render_template, Response,jsonify,request, session
 import cv2
 import mediapipe as mp 
 import itertools
@@ -31,7 +31,8 @@ mp_hands = mp.solutions.hands
 alphabet = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 alphabet += list(string.ascii_uppercase)
 
-predicted_text = ""  # Initialize variable to hold the predicted text
+app = Flask(__name__)
+app.secret_key = os.urandom(24) # Needed for session management
 
 # Function to calculate the landmark points of hands for detections
 def calc_landmark_list(image, landmarks):
@@ -68,8 +69,6 @@ def pre_process_landmark(landmark_list):
     temp_landmark_list = [n / max_value for n in temp_landmark_list]
 
     return temp_landmark_list
-
-app = Flask(__name__)
 
 # Remove global VideoCapture - we'll process frames sent from browser instead
 # cap = cv2.VideoCapture(0)
@@ -315,32 +314,35 @@ def video():
 
 @app.route('/add_character', methods=['POST'])
 def add_character():
-    global predicted_text
+    predicted_text = session.get('predicted_text', '')
     data = request.json
     character = data.get('character', '')
     if character:
         predicted_text += character
+    session['predicted_text'] = predicted_text
     return jsonify(success=True)
 
 
 # Route to get the current predicted text
 @app.route('/get_predicted_text', methods=['GET'])
 def get_predicted_text():
+    predicted_text = session.get('predicted_text', '')
     return jsonify(predicted_text=predicted_text)
 
 
 @app.route('/clear_last_character', methods=['POST'])
 def clear_last_character():
-    global predicted_text
+    predicted_text = session.get('predicted_text', '')
     if predicted_text:
         predicted_text = predicted_text[:-1]
+    session['predicted_text'] = predicted_text
     return jsonify(predicted_text=predicted_text)
 
 
 
 @app.route('/speak_sentence', methods=['POST'])
 def speak_sentence():
-    global predicted_text
+    predicted_text = session.get('predicted_text', '')
     engine = pyttsx3.init()
     engine.say(predicted_text)
     engine.runAndWait()
@@ -349,16 +351,16 @@ def speak_sentence():
 # Route to clear the entire predicted sentence
 @app.route('/clear_sentence', methods=['POST'])
 def clear_sentence():
-    global predicted_text
-    predicted_text = ""
+    session['predicted_text'] = ""
     return jsonify(success=True)
 
 
 # Route to add a space in the predicted text
 @app.route('/add_space', methods=['POST'])
 def add_space():
-    global predicted_text
+    predicted_text = session.get('predicted_text', '')
     predicted_text += " "
+    session['predicted_text'] = predicted_text
     return jsonify(predicted_text=predicted_text)
 
 
