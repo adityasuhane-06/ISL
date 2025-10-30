@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>About Us - Sign Sarthi</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-tale-seo-agency.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/about.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Modern Rounded Navigation -->
+  <nav class="modern-nav">
+    <div class="nav-container">
+      <div class="nav-content">
+        <!-- Logo -->
+        <a href="/" class="nav-logo">
+          <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Sign Sarthi">
+          <span class="logo-text">Sign Sarthi</span>
+        </a>
+        
+        <!-- Navigation Links -->
+        <div class="nav-links">
+          <a href="/" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+          <a href="/isl" class="nav-link">
+            <i class="fas fa-video"></i>
+            <span>ISL</span>
+          </a>
+          <a href="#projects" class="nav-link">
+            <i class="fas fa-hand-paper"></i>
+            <span>NFSL</span>
+          </a>
+          <a href="/text_to_isl" class="nav-link">
+            <i class="fas fa-text-height"></i>
+            <span>Text</span>
+          </a>
+          <a href="/about" class="nav-link active">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+          </a>
+          <a href="/community" class="nav-link">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <button class="mobile-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <a href="/" class="mobile-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="/isl" class="mobile-link">
+        <i class="fas fa-video"></i>
+        <span>ISL</span>
+      </a>
+      <a href="#projects" class="mobile-link">
+        <i class="fas fa-hand-paper"></i>
+        <span>NFSL</span>
+      </a>
+      <a href="/text_to_isl" class="mobile-link">
+        <i class="fas fa-text-height"></i>
+        <span>Text</span>
+      </a>
+      <a href="/about" class="mobile-link active">
+        <i class="fas fa-info-circle"></i>
+        <span>About</span>
+      </a>
+      <a href="/community" class="mobile-link">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- About Page Content -->
+  <main class="about-page">
+    
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="hero-content">
+              <h1 class="fade-in">About Sign Sarthi</h1>
+              <p class="lead fade-in-delay">Bridging Communication Gaps Through AI-Powered Sign Language Recognition</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4">
+            <div class="content-box slide-in-left">
+              <h2>Our Mission</h2>
+              <p>Sign Sarthi is dedicated to breaking down communication barriers for the deaf and hard-of-hearing community. With over 70 million deaf individuals worldwide, we believe technology can bridge the gap between sign language users and the hearing world.</p>
+              <p>Our AI-powered platform recognizes Indian Sign Language (ISL) in real-time, translating gestures into text and speech, making communication accessible, instant, and inclusive.</p>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4">
+            <div class="image-box slide-in-right">
+              <div class="gradient-border">
+                <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Sign Sarthi Mission" class="mission-image">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h2 class="section-title">What We Offer</h2>
+            <div class="title-underline"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-hands"></i>
+              </div>
+              <h3>Real-Time Recognition</h3>
+              <p>Advanced AI models recognize Indian Sign Language gestures instantly with high accuracy.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-language"></i>
+              </div>
+              <h3>Multi-Language Support</h3>
+              <p>Translate ISL to multiple Indian languages including Hindi, Bengali, Tamil, and more.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-universal-access"></i>
+              </div>
+              <h3>Accessibility First</h3>
+              <p>Designed with accessibility in mind, ensuring everyone can communicate effortlessly.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3>AI-Powered Learning</h3>
+              <p>Our models continuously learn and improve to provide better recognition accuracy.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <h3>Cross-Platform</h3>
+              <p>Access Sign Sarthi on any device - desktop, tablet, or mobile phone.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Community Driven</h3>
+              <p>Built with input from the deaf community to meet real-world communication needs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-box">
+              <div class="stat-number" data-target="70">0</div>
+              <div class="stat-label">Million+ Deaf Individuals</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-box">
+              <div class="stat-number" data-target="35">0</div>
+              <div class="stat-label">ISL Signs Recognized</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-box">
+              <div class="stat-number" data-target="95">0</div>
+              <div class="stat-label">% Accuracy Rate</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-box">
+              <div class="stat-number" data-target="9">0</div>
+              <div class="stat-label">Languages Supported</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="technology-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h2 class="section-title">Our Technology</h2>
+            <div class="title-underline"></div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4">
+            <div class="tech-list">
+              <div class="tech-item">
+                <div class="tech-icon">🎥</div>
+                <div class="tech-content">
+                  <h4>Computer Vision</h4>
+                  <p>Advanced camera-based hand tracking and gesture recognition using MediaPipe.</p>
+                </div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🧠</div>
+                <div class="tech-content">
+                  <h4>Deep Learning</h4>
+                  <p>TensorFlow-powered neural networks trained on thousands of ISL gestures.</p>
+                </div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">⚡</div>
+                <div class="tech-content">
+                  <h4>Real-Time Processing</h4>
+                  <p>Low-latency recognition at 6-7 FPS for smooth, instant communication.</p>
+                </div>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">☁️</div>
+                <div class="tech-content">
+                  <h4>Cloud Deployment</h4>
+                  <p>Hosted on Google Cloud Run for scalability and global accessibility.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4">
+            <div class="tech-visual">
+              <div class="tech-circle">
+                <div class="circle-content">
+                  <h3>AI-Powered</h3>
+                  <p>Sign Language Recognition</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2>Ready to Break Communication Barriers?</h2>
+            <p>Join thousands using Sign Sarthi to communicate effortlessly</p>
+            <a href="/isl" class="cta-button">Try Sign Sarthi Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <style>
+    .modern-nav { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3); border-radius: 20px; margin: 25px auto; max-width: 1400px; padding: 0; }
+    .nav-container { padding: 0 30px; }
+    .nav-content { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+    .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.3s; }
+    .nav-logo:hover { transform: scale(1.05); }
+    .nav-logo img { height: 50px; width: 50px; object-fit: contain; border-radius: 10px; background: rgba(255, 255, 255, 0.9); padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .logo-text { font-size: 24px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-link { display: flex; align-items: center; gap: 8px; padding: 12px 20px; color: white; text-decoration: none; border-radius: 12px; font-size: 15px; font-weight: 600; transition: all 0.3s; background: rgba(255, 255, 255, 0.1); }
+    .nav-link:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white; text-decoration: none; }
+    .nav-link.active { background: rgba(255, 255, 255, 0.3); box-shadow: 0 5px 20px rgba(255,255,255,0.3); }
+    .nav-link i { font-size: 18px; }
+    .mobile-toggle { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 12px 16px; border-radius: 10px; font-size: 20px; cursor: pointer; transition: all 0.3s; }
+    .mobile-toggle:hover { background: rgba(255, 255, 255, 0.3); }
+    .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; opacity: 0; transition: opacity 0.3s; }
+    .mobile-menu.active { display: flex; opacity: 1; }
+    .mobile-menu-content { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 280px; height: 100%; padding: 30px; transform: translateX(-100%); transition: transform 0.3s; overflow-y: auto; }
+    .mobile-menu.active .mobile-menu-content { transform: translateX(0); }
+    .mobile-close { background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 12px; border-radius: 10px; font-size: 24px; cursor: pointer; margin-bottom: 30px; width: 100%; transition: all 0.3s; }
+    .mobile-close:hover { background: rgba(255, 255, 255, 0.3); }
+    .mobile-link { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: white; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s; }
+    .mobile-link:hover, .mobile-link.active { background: rgba(255, 255, 255, 0.25); transform: translateX(5px); color: white; text-decoration: none; }
+    .mobile-link i { font-size: 20px; width: 25px; }
+    @media (max-width: 1200px) { .nav-link span { display: none; } .nav-link { padding: 12px 15px; } .nav-link i { margin: 0; } }
+    @media (max-width: 992px) { .modern-nav { margin: 20px; border-radius: 15px; } .nav-links { display: none; } .mobile-toggle { display: block; } .logo-text { font-size: 20px; } .nav-logo img { height: 40px; width: 40px; } }
+    @media (max-width: 576px) { .modern-nav { margin: 15px; border-radius: 12px; } .nav-container { padding: 0 20px; } .nav-content { padding: 12px 0; } .logo-text { display: none; } }
+  </style>
+
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/about.js') }}"></script>
+
+  <script>
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileClose = document.querySelector('.mobile-close');
+    if (mobileToggle) { mobileToggle.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; }); }
+    if (mobileClose) { mobileClose.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); }
+    if (mobileMenu) { mobileMenu.addEventListener('click', (e) => { if (e.target === mobileMenu) { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; } }); }
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    mobileLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); });
+  </script>
+
+</body>
+
+</html>

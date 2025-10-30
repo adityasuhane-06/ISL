@@ -1,0 +1,42 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tempCodeRunnerFile.py
+temp_audio.webm
+char_video_*.mp4
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Vercel (not needed for GCP)
+.vercel
+vercel.json
+
+# Large files (if you use Git LFS instead)
+# *.h5
+# *.zip

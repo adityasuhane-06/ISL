@@ -1,0 +1,37 @@
+# Git files
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tempCodeRunnerFile.py
+temp_audio.webm
+char_video_*.mp4
+
+# Documentation (upload separately if needed)
+README.md
+GCP_DEPLOYMENT.md
+DEPLOY_GCP_QUICKSTART.md
+
+# Not needed for deployment
+.dockerignore
+vercel.json
+render.yaml

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Community - Sign Sarthi</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/templatemo-tale-seo-agency.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/community.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Modern Rounded Navigation -->
+  <nav class="modern-nav">
+    <div class="nav-container">
+      <div class="nav-content">
+        <!-- Logo -->
+        <a href="/" class="nav-logo">
+          <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Sign Sarthi">
+          <span class="logo-text">Sign Sarthi</span>
+        </a>
+        
+        <!-- Navigation Links -->
+        <div class="nav-links">
+          <a href="/" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+          <a href="/isl" class="nav-link">
+            <i class="fas fa-video"></i>
+            <span>ISL</span>
+          </a>
+          <a href="#projects" class="nav-link">
+            <i class="fas fa-hand-paper"></i>
+            <span>NFSL</span>
+          </a>
+          <a href="/text_to_isl" class="nav-link">
+            <i class="fas fa-text-height"></i>
+            <span>Text</span>
+          </a>
+          <a href="/about" class="nav-link">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+          </a>
+          <a href="/community" class="nav-link active">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <button class="mobile-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <a href="/" class="mobile-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="/isl" class="mobile-link">
+        <i class="fas fa-video"></i>
+        <span>ISL</span>
+      </a>
+      <a href="#projects" class="mobile-link">
+        <i class="fas fa-hand-paper"></i>
+        <span>NFSL</span>
+      </a>
+      <a href="/text_to_isl" class="mobile-link">
+        <i class="fas fa-text-height"></i>
+        <span>Text</span>
+      </a>
+      <a href="/about" class="mobile-link">
+        <i class="fas fa-info-circle"></i>
+        <span>About</span>
+      </a>
+      <a href="/community" class="mobile-link active">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Community Page Content -->
+  <main class="community-page">
+    
+    <!-- Hero Section -->
+    <section class="community-hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="hero-content">
+              <h1 class="fade-in">Join Our Community</h1>
+              <p class="lead fade-in-delay">Connect, Share, and Grow with Sign Sarthi Users Worldwide</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Stats -->
+    <section class="community-stats">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-number" data-target="5000">0</div>
+              <div class="stat-label">Active Members</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card">
+              <div class="stat-icon">💬</div>
+              <div class="stat-number" data-target="15000">0</div>
+              <div class="stat-label">Messages Sent</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card">
+              <div class="stat-icon">🎓</div>
+              <div class="stat-number" data-target="250">0</div>
+              <div class="stat-label">Learning Resources</div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stat-card">
+              <div class="stat-icon">🌍</div>
+              <div class="stat-number" data-target="50">0</div>
+              <div class="stat-label">Countries</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Gallery -->
+    <section class="community-gallery">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h2 class="section-title">Community Gallery</h2>
+            <p class="section-subtitle">Moments captured from our vibrant Sign Sarthi community</p>
+          </div>
+        </div>
+        <div class="row gallery-grid">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 1">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Community Meetup</h4>
+                  <p>Sign Sarthi users connecting in person</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 2">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Workshop Session</h4>
+                  <p>Learning ISL together</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 3">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Success Stories</h4>
+                  <p>Celebrating achievements</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 4">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Tech Talks</h4>
+                  <p>Exploring AI and accessibility</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 5">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Online Sessions</h4>
+                  <p>Virtual community gatherings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="gallery-item">
+              <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="Community Event 6">
+              <div class="gallery-overlay">
+                <div class="gallery-content">
+                  <h4>Collaboration</h4>
+                  <p>Building together</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h2 class="section-title">What Our Community Says</h2>
+            <p class="section-subtitle">Real experiences from Sign Sarthi users</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="testimonial-card">
+              <div class="testimonial-avatar">
+                <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="User 1">
+              </div>
+              <div class="testimonial-content">
+                <p>"Sign Sarthi has transformed the way I communicate. It's incredibly accurate and easy to use!"</p>
+                <h5>Priya Sharma</h5>
+                <span>Mumbai, India</span>
+              </div>
+              <div class="testimonial-rating">
+                ⭐⭐⭐⭐⭐
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="testimonial-card">
+              <div class="testimonial-avatar">
+                <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="User 2">
+              </div>
+              <div class="testimonial-content">
+                <p>"As a teacher, this tool helps me connect with my deaf students effortlessly. Highly recommended!"</p>
+                <h5>Rajesh Kumar</h5>
+                <span>Delhi, India</span>
+              </div>
+              <div class="testimonial-rating">
+                ⭐⭐⭐⭐⭐
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="testimonial-card">
+              <div class="testimonial-avatar">
+                <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="User 3">
+              </div>
+              <div class="testimonial-content">
+                <p>"The multi-language support is amazing. I can now communicate in my native language!"</p>
+                <h5>Anita Desai</h5>
+                <span>Bangalore, India</span>
+              </div>
+              <div class="testimonial-rating">
+                ⭐⭐⭐⭐⭐
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-5">
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-subtitle">Join us for workshops, webinars, and community meetups</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 mb-4">
+            <div class="event-card">
+              <div class="event-date">
+                <span class="day">15</span>
+                <span class="month">DEC</span>
+              </div>
+              <div class="event-content">
+                <h4>ISL Workshop for Beginners</h4>
+                <p>Learn the basics of Indian Sign Language with expert instructors.</p>
+                <div class="event-meta">
+                  <span><i class="fas fa-clock"></i> 2:00 PM - 4:00 PM</span>
+                  <span><i class="fas fa-map-marker-alt"></i> Online</span>
+                </div>
+                <a href="#" class="event-btn">Register Now</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-4">
+            <div class="event-card">
+              <div class="event-date">
+                <span class="day">22</span>
+                <span class="month">DEC</span>
+              </div>
+              <div class="event-content">
+                <h4>Community Meetup - Delhi</h4>
+                <p>Connect with fellow Sign Sarthi users in your city.</p>
+                <div class="event-meta">
+                  <span><i class="fas fa-clock"></i> 10:00 AM - 1:00 PM</span>
+                  <span><i class="fas fa-map-marker-alt"></i> Delhi</span>
+                </div>
+                <a href="#" class="event-btn">Register Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join CTA -->
+    <section class="join-cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2>Ready to Join Our Community?</h2>
+            <p>Be part of a movement that's breaking communication barriers</p>
+            <div class="cta-buttons">
+              <a href="/isl" class="cta-button primary">Start Using Sign Sarthi</a>
+              <a href="#" class="cta-button secondary">Join Our Forum</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <style>
+    .modern-nav { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3); border-radius: 20px; margin: 25px auto; max-width: 1400px; padding: 0; }
+    .nav-container { padding: 0 30px; }
+    .nav-content { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+    .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.3s; }
+    .nav-logo:hover { transform: scale(1.05); }
+    .nav-logo img { height: 50px; width: 50px; object-fit: contain; border-radius: 10px; background: rgba(255, 255, 255, 0.9); padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .logo-text { font-size: 24px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-link { display: flex; align-items: center; gap: 8px; padding: 12px 20px; color: white; text-decoration: none; border-radius: 12px; font-size: 15px; font-weight: 600; transition: all 0.3s; background: rgba(255, 255, 255, 0.1); }
+    .nav-link:hover { background: rgba(255, 255, 255, 0.25); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white; text-decoration: none; }
+    .nav-link.active { background: rgba(255, 255, 255, 0.3); box-shadow: 0 5px 20px rgba(255,255,255,0.3); }
+    .nav-link i { font-size: 18px; }
+    .mobile-toggle { display: none; background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 12px 16px; border-radius: 10px; font-size: 20px; cursor: pointer; transition: all 0.3s; }
+    .mobile-toggle:hover { background: rgba(255, 255, 255, 0.3); }
+    .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; opacity: 0; transition: opacity 0.3s; }
+    .mobile-menu.active { display: flex; opacity: 1; }
+    .mobile-menu-content { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 280px; height: 100%; padding: 30px; transform: translateX(-100%); transition: transform 0.3s; overflow-y: auto; }
+    .mobile-menu.active .mobile-menu-content { transform: translateX(0); }
+    .mobile-close { background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 12px; border-radius: 10px; font-size: 24px; cursor: pointer; margin-bottom: 30px; width: 100%; transition: all 0.3s; }
+    .mobile-close:hover { background: rgba(255, 255, 255, 0.3); }
+    .mobile-link { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: white; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: 600; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); transition: all 0.3s; }
+    .mobile-link:hover, .mobile-link.active { background: rgba(255, 255, 255, 0.25); transform: translateX(5px); color: white; text-decoration: none; }
+    .mobile-link i { font-size: 20px; width: 25px; }
+    @media (max-width: 1200px) { .nav-link span { display: none; } .nav-link { padding: 12px 15px; } .nav-link i { margin: 0; } }
+    @media (max-width: 992px) { .modern-nav { margin: 20px; border-radius: 15px; } .nav-links { display: none; } .mobile-toggle { display: block; } .logo-text { font-size: 20px; } .nav-logo img { height: 40px; width: 40px; } }
+    @media (max-width: 576px) { .modern-nav { margin: 15px; border-radius: 12px; } .nav-container { padding: 0 20px; } .nav-content { padding: 12px 0; } .logo-text { display: none; } }
+  </style>
+
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/js/community.js') }}"></script>
+
+  <script>
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileClose = document.querySelector('.mobile-close');
+    if (mobileToggle) { mobileToggle.addEventListener('click', () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; }); }
+    if (mobileClose) { mobileClose.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); }
+    if (mobileMenu) { mobileMenu.addEventListener('click', (e) => { if (e.target === mobileMenu) { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; } }); }
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    mobileLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); });
+  </script>
+
+</body>
+
+</html>

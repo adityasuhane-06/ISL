@@ -5,11 +5,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <title>Sign Sarthi - Indian Sign Language Detection Platform</title>
+  <title>Text to ISL - Sign Sarthi</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
 
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/fontawesome.css') }}">
@@ -17,7 +16,171 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/owl.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/animate.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+  
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
 
+    main {
+      padding: 150px 20px 60px 20px;
+      min-height: calc(100vh - 200px);
+    }
+
+    .content-container {
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 42px;
+      font-weight: 800;
+      color: #764ba2;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .page-subtitle {
+      font-size: 18px;
+      color: #666;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .input-section {
+      margin-bottom: 30px;
+    }
+
+    .form-control {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px 20px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .convert-btn {
+      padding: 15px 40px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .convert-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-character {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-gesture {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+
+    .video-container {
+      margin-top: 30px;
+      text-align: center;
+      min-height: 450px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f7fa;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .video-container video {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      max-height: 500px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .video-placeholder {
+      color: #999;
+      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .video-placeholder i {
+      font-size: 72px;
+      color: #ddd;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    .info-box h5 {
+      color: #764ba2;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .info-box ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .info-box li {
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .content-container {
+        padding: 30px 20px;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .convert-btn {
+        width: 100%;
+      }
+    }
+  </style>
 
 </head>
 
@@ -35,7 +198,7 @@
         
         <!-- Navigation Links -->
         <div class="nav-links">
-          <a href="/" class="nav-link active">
+          <a href="/" class="nav-link">
             <i class="fas fa-home"></i>
             <span>Home</span>
           </a>
@@ -47,7 +210,7 @@
             <i class="fas fa-hand-paper"></i>
             <span>NFSL</span>
           </a>
-          <a href="/text_to_isl" class="nav-link">
+          <a href="/text_to_isl" class="nav-link active">
             <i class="fas fa-text-height"></i>
             <span>Text</span>
           </a>
@@ -75,7 +238,7 @@
       <button class="mobile-close">
         <i class="fas fa-times"></i>
       </button>
-      <a href="/" class="mobile-link active">
+      <a href="/" class="mobile-link">
         <i class="fas fa-home"></i>
         <span>Home</span>
       </a>
@@ -87,7 +250,7 @@
         <i class="fas fa-hand-paper"></i>
         <span>NFSL</span>
       </a>
-      <a href="/text_to_isl" class="mobile-link">
+      <a href="/text_to_isl" class="mobile-link active">
         <i class="fas fa-text-height"></i>
         <span>Text</span>
       </a>
@@ -102,39 +265,95 @@
     </div>
   </div>
 
-  <div class="main-banner" id="top">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7">
-          <div class="caption header-text">
-            <h6>Indian Sign Language</h6>
-            <div class="line-dec"></div>
-            <h4>Connecting <em>The</em> World <span>With Sign Sarthi</span></h4>
-            <p>Sign Sarthi is an advanced Indian Sign Language detection platform designed to bridge communication gaps for the deaf community. Utilizing the latest AI technologies, it helps 70 million deaf individuals communicate seamlessly. Explore our site with pages like <a href="index.html">Home</a>, <a href="#">ISL</a>, and <a href="nfsl.html">NFSL</a>.</p>
+  <main>
+    <div class="content-container">
+      <h1 class="page-title">Text to Sign Language</h1>
+      <p class="page-subtitle">Convert text into Indian Sign Language video demonstrations</p>
 
-            <div class="main-button scroll-to-section"><a href="/isl">Discover More</a></div>
-            <span>or</span>
-            <div class="second-button"><a href="faqs.html">Check our FAQs</a></div>
+      <div class="info-box">
+        <h5>How to Use:</h5>
+        <ul>
+          <li><strong>Character Level:</strong> Converts individual letters (e.g., "hello" → H-E-L-L-O signs)</li>
+          <li><strong>Gesture Level:</strong> Converts complete phrases (e.g., "hello" → single hello gesture)</li>
+        </ul>
+      </div>
 
-          </div>
+      <div class="input-section">
+        <input type="text" id="inputText" class="form-control" placeholder="Enter text or phrase here...">
+      </div>
+
+      <div class="button-group">
+        <button id="charButton" class="convert-btn btn-character">
+          <i class="fas fa-font"></i>
+          Character Level
+        </button>
+        <button id="gestureButton" class="convert-btn btn-gesture">
+          <i class="fas fa-hand-paper"></i>
+          Gesture Level
+        </button>
+      </div>
+
+      <div id="videoContainer" class="video-container">
+        <div class="video-placeholder">
+          <i class="fas fa-video"></i>
+          <p>Your converted sign language video will appear here</p>
         </div>
       </div>
     </div>
-  </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('charButton').onclick = function() {
+        convertText('character');
+      };
+    
+      document.getElementById('gestureButton').onclick = function() {
+        convertText('gesture');
+      };
+    });
+
+    async function convertText(level) {
+      const inputText = document.getElementById('inputText').value.trim();
+
+      if (!inputText) {
+        alert("Please enter some text.");
+        return;
+      }
+
+      // Show loading state
+      const videoContainer = document.getElementById('videoContainer');
+      videoContainer.innerHTML = '<div class="video-placeholder"><i class="fas fa-spinner fa-spin"></i><p>Converting to sign language...</p></div>';
+
+      try {
+        const response = await fetch('/convert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: inputText, level: level })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          videoContainer.innerHTML = ''; // Clear loading message
+
+          const videoElement = document.createElement('video');
+          videoElement.src = data.video_path;
+          videoElement.controls = true;
+          videoElement.autoplay = true;
+          videoContainer.appendChild(videoElement);
+        } else {
+          videoContainer.innerHTML = '<div class="video-placeholder"><i class="fas fa-exclamation-triangle" style="color: #f5576c;"></i><p style="color: #f5576c;">' + (data.error || 'Something went wrong') + '</p></div>';
+        }
+      } catch (error) {
+        videoContainer.innerHTML = '<div class="video-placeholder"><i class="fas fa-exclamation-triangle" style="color: #f5576c;"></i><p style="color: #f5576c;">Error: ' + error.message + '</p></div>';
+      }
+    }
+  </script>
 
   <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-
   <style>
-    /* Modern Navigation Styles */
-    .modern-nav {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-      border-radius: 20px;
-      margin: 25px auto;
-      max-width: 1400px;
-      padding: 0;
-    }
+    .modern-nav { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3); border-radius: 20px; margin: 25px auto; max-width: 1400px; padding: 0; }
     .nav-container { padding: 0 30px; }
     .nav-content { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
     .nav-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform 0.3s; }
@@ -170,7 +389,6 @@
   <script src="{{ url_for('static', filename='assets/js/popup.js') }}"></script>
   <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 
-  <!-- Mobile Menu Script -->
   <script>
     const mobileToggle = document.querySelector('.mobile-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -181,12 +399,6 @@
     const mobileLinks = document.querySelectorAll('.mobile-link');
     mobileLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); });
   </script>
-
-
-
-
-
-
 
 </body>
 

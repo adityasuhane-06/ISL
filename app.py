@@ -13,6 +13,8 @@ import pyttsx3
 warnings.filterwarnings("ignore")
 import speech_recognition as sr
 from moviepy import VideoFileClip
+from moviepy import ImageSequenceClip
+import os
 
 
 
@@ -67,66 +69,86 @@ def pre_process_landmark(landmark_list):
     return temp_landmark_list
 
 app = Flask(__name__)
-cap = cv2.VideoCapture(0)
 
+# Remove global VideoCapture - we'll process frames sent from browser instead
+# cap = cv2.VideoCapture(0)
 
+# Store latest prediction result
+latest_prediction = {"text": "", "confidence": 0.0}
 
-def generate_frames():
-    global predicted_text
-    previous_sign = None
-    start_time = None
-    detection_threshold = 1
-
-    with mp_hands.Hands(
-        model_complexity=0, max_num_hands=2,
-        min_detection_confidence=0.3, min_tracking_confidence=0.6
-    ) as hands:
-        while cap.isOpened():
-            success, frame = cap.read()
-            if not success:
-                print("Ignoring empty camera frame.")
-                continue
-
-            frame = cv2.flip(frame, 1)
-            image = frame.copy()
-            image.flags.writeable = False
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+def process_frame(frame_data):
+    """Process a single frame sent from browser"""
+    global predicted_text, latest_prediction
+    
+    try:
+        # Decode base64 image from browser
+        import base64
+        
+        # Remove data URL prefix if present
+        if ',' in frame_data:
+            frame_data = frame_data.split(',')[1]
+        
+        # Decode base64 to image
+        img_bytes = base64.b64decode(frame_data)
+        nparr = np.frombuffer(img_bytes, np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        if frame is None:
+            return {"error": "Could not decode frame"}
+        
+        # Process frame with MediaPipe
+        image = frame.copy()
+        image.flags.writeable = False
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        
+        with mp_hands.Hands(
+            model_complexity=0, max_num_hands=2,
+            min_detection_confidence=0.3, min_tracking_confidence=0.6
+        ) as hands:
             results = hands.process(image)
-            image.flags.writeable = True
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-            if results.multi_hand_landmarks:
-                for hand_landmarks in results.multi_hand_landmarks:
-                    landmark_list = calc_landmark_list(image, hand_landmarks)
-                    pre_processed_landmark_list = pre_process_landmark(landmark_list)
-
-                    mp_drawing.draw_landmarks(
-                        image, hand_landmarks, mp_hands.HAND_CONNECTIONS,
-                        mp_drawing_styles.get_default_hand_landmarks_style(),
-                        mp_drawing_styles.get_default_hand_connections_style()
-                    )
-
-                    df = pd.DataFrame([pre_processed_landmark_list])
-                    predictions = model.predict(df, verbose=0)
-                    predicted_classes = np.argmax(predictions, axis=1)
-                    label = alphabet[predicted_classes[0]]
-
-                    cv2.putText(image, label, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 2)
-
-                    if label == previous_sign:
-                        if start_time is None:
-                            start_time = time.time()
-                        elif time.time() - start_time >= detection_threshold:
-                            predicted_text += label
-                            start_time = None
-                    else:
-                        previous_sign = label
-                        start_time = None
-
-            ret, buffer = cv2.imencode('.jpg', image)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        image.flags.writeable = True
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        
+        prediction_label = None
+        confidence = 0.0
+        
+        if results.multi_hand_landmarks:
+            for hand_landmarks in results.multi_hand_landmarks:
+                landmark_list = calc_landmark_list(image, hand_landmarks)
+                pre_processed_landmark_list = pre_process_landmark(landmark_list)
+                
+                # Draw landmarks on image
+                mp_drawing.draw_landmarks(
+                    image, hand_landmarks, mp_hands.HAND_CONNECTIONS,
+                    mp_drawing_styles.get_default_hand_landmarks_style(),
+                    mp_drawing_styles.get_default_hand_connections_style()
+                )
+                
+                # Predict
+                df = pd.DataFrame([pre_processed_landmark_list])
+                predictions = model.predict(df, verbose=0)
+                predicted_classes = np.argmax(predictions, axis=1)
+                prediction_label = alphabet[predicted_classes[0]]
+                confidence = float(np.max(predictions))
+                
+                # Draw prediction on image
+                cv2.putText(image, prediction_label, (50, 50), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 2)
+        
+        # Encode processed image back to base64
+        _, buffer = cv2.imencode('.jpg', image)
+        processed_image = base64.b64encode(buffer).decode('utf-8')
+        
+        return {
+            "success": True,
+            "prediction": prediction_label,
+            "confidence": confidence,
+            "processed_image": f"data:image/jpeg;base64,{processed_image}"
+        }
+        
+    except Exception as e:
+        return {"error": str(e)}
             
 
 
@@ -164,6 +186,18 @@ def map_text_to_video(text):
 def index():
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    return jsonify({"status": "healthy", "service": "Sign Sarthi ISL"}), 200
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/community')
+def community():
+    return render_template('community.html')
+
 @app.route('/isl')
 def isl_page():
     global current_model, current_labels_dict
@@ -189,14 +223,107 @@ def audio_to_ISL():
     return render_template('audio_to_ISL.html')
 
 
+# Text to ISL conversion functions
+def character_to_video(text):
+    """Convert text characters to video"""
+    image_folder = 'static/images'
+    images = []
+    
+    for char in text:
+        image_path = os.path.join(image_folder, f"{char}.jpg")
+        if os.path.exists(image_path):
+            images.append(image_path)
+        else:
+            print(f"No image found for character: {char}")
+    
+    if images:
+        # Use a unique filename based on the current timestamp
+        unique_filename = f"char_video_{int(time.time())}.mp4"
+        video_path = os.path.join('static/videos', unique_filename)
+        clip = ImageSequenceClip(images, fps=1)  # Adjust FPS as needed
+        clip.write_videofile(video_path, codec='libx264')
+        return video_path
+    
+    return None
 
 
+def gesture_to_video(text):
+    """Map text to gesture-level video paths"""
+    video_mapping = {
+        "hello": "static/videos/hello.webm",
+        "thank you": "static/videos/thank.mp4",
+        "goodbye": "static/videos/goodbye.webm",
+        "thanks": "static/videos/thank.mp4",
+        "how are you": "static/videos/how are you.webm",
+        "niceday": "static/videos/niceday.webm",
+        "nice day": "static/videos/niceday.webm",
+        "excuse me": "static/videos/excuseme.webm",
+        "excuseme": "static/videos/excuseme.webm",
+        "delivery": "static/videos/delivery.webm",
+        "direction": "static/videos/direction.webm",
+        "above": "static/videos/above.mp4",
+    }
+    
+    return video_mapping.get(text.lower(), None)
+
+
+@app.route('/text_to_isl', methods=['GET'])
+def text_to_isl():
+    """Render Text to ISL page"""
+    return render_template('text_to_isl.html')
+
+
+@app.route('/convert', methods=['POST'])
+def convert_text_to_isl():
+    """Convert text to ISL video"""
+    text = request.json.get('text', '')
+    level = request.json.get('level', '')
+
+    if level == "character":
+        video_path = character_to_video(text.lower())
+    elif level == "gesture":
+        video_path = gesture_to_video(text.lower())
+    else:
+        return jsonify({"error": "Invalid conversion level"}), 400
+    
+    if video_path:
+        return jsonify({"video_path": video_path})
+    else:
+        return jsonify({"error": "No matching video or images found for the given text"}), 404
+
+
+
+
+
+
+@app.route('/process_frame', methods=['POST'])
+def process_frame_route():
+    """Receive frame from browser and return prediction"""
+    data = request.json
+    frame_data = data.get('frame')
+    
+    if not frame_data:
+        return jsonify({"error": "No frame data provided"}), 400
+    
+    result = process_frame(frame_data)
+    return jsonify(result)
 
 
 @app.route('/video')
 def video():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # This endpoint is no longer needed for browser-based capture
+    return jsonify({"message": "Please use browser camera capture"}), 200
 
+
+
+@app.route('/add_character', methods=['POST'])
+def add_character():
+    global predicted_text
+    data = request.json
+    character = data.get('character', '')
+    if character:
+        predicted_text += character
+    return jsonify(success=True)
 
 
 # Route to get the current predicted text
@@ -239,4 +366,6 @@ def add_space():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
