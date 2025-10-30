@@ -13,8 +13,8 @@ import pyttsx3
 import hashlib
 warnings.filterwarnings("ignore")
 import speech_recognition as sr
-from moviepy import VideoFileClip
-from moviepy import ImageSequenceClip
+from moviepy.editor import VideoFileClip
+from moviepy.editor import ImageSequenceClip
 import os
 
 

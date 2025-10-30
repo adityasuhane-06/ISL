@@ -4,7 +4,7 @@
 Write-Host "=== Sign Sarthi GCP Deployment ===" -ForegroundColor Green
 
 # Set variables
-$PROJECT_ID = "sign-sarthi-isl"
+$PROJECT_ID = "sign-sarthi"
 $REGION = "us-central1"
 $SERVICE_NAME = "sign-sarthi"
 
