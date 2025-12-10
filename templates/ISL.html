@@ -771,14 +771,14 @@
                 startTime = now;
                 predictionIndicator.style.background = 'rgba(255,165,0,0.8)'; // Orange - detecting
               } else if (now - startTime >= detectionThreshold) {
-                // Check cooldown before adding
+                // Check if we're in cooldown period for this character
                 const timeSinceLastAdd = now - lastAddedTime;
                 const isDifferentSign = currentSign !== lastAddedSign;
                 const cooldownExpired = timeSinceLastAdd >= cooldownPeriod;
                 
                 if (isDifferentSign || cooldownExpired) {
-                  console.log(`Adding character: ${currentSign} (last: ${lastAddedSign}, cooldown: ${timeSinceLastAdd}ms)`);
                   // Add to predicted text
+                  console.log(`Adding character: ${currentSign} (last: ${lastAddedSign}, cooldown: ${timeSinceLastAdd}ms)`);
                   addToPredictedText(currentSign);
                   lastAddedSign = currentSign;
                   lastAddedTime = now;
@@ -787,11 +787,16 @@
                   setTimeout(() => {
                     predictionIndicator.style.background = 'rgba(0,150,255,0.8)';
                   }, 500);
+                  // Reset to prevent immediate re-detection
+                  previousSign = null;
+                  startTime = null;
                 } else {
-                  console.log(`Cooldown active: ${timeSinceLastAdd}ms < ${cooldownPeriod}ms`);
+                  // In cooldown, reset detection
+                  console.log(`Cooldown active for ${currentSign}, waiting...`);
+                  previousSign = null;
+                  startTime = null;
+                  predictionIndicator.style.background = 'rgba(255,193,7,0.6)'; // Yellow - cooldown
                 }
-                startTime = null;
-                previousSign = null; // Reset to allow new detection
               }
             } else {
               previousSign = currentSign;
@@ -850,18 +855,33 @@
     // Add character to predicted text
     function addToPredictedText(char) {
       console.log('addToPredictedText called with:', char);
-      const currentText = predictedTextElement.textContent;
-      // Update via server to keep state synchronized
+      
+      // IMMEDIATELY update display on frontend (optimistic update)
+      const currentText = predictedTextElement.textContent || '';
+      const newText = currentText + char;
+      predictedTextElement.textContent = newText;
+      console.log('Display immediately updated to:', newText);
+      
+      // Then sync with server in background
       fetch('/add_character', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ character: char })
-      }).then(() => {
-        updatePredictedText();
-      }).catch(err => {
-        console.error('Error adding character:', err);
+        body: JSON.stringify({ character: char, current_text: newText })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server synced:', data);
+        // Only update if server has different text (conflict resolution)
+        if (data.predicted_text !== newText) {
+          console.warn('Server text differs! Server:', data.predicted_text, 'Local:', newText);
+          // Trust local version since it has the most recent updates
+        }
+      })
+      .catch(err => {
+        console.error('Error syncing with server:', err);
+        // Display already updated, so error doesn't affect user experience
       });
     }
 
@@ -929,9 +949,18 @@
 
     function updatePredictedText() {
       fetch('/get_predicted_text')
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(data => {
-          predictedTextElement.textContent = data.predicted_text;
+          console.log('Predicted text updated:', data.predicted_text);
+          predictedTextElement.textContent = data.predicted_text || '';
+        })
+        .catch(error => {
+          console.error('Error fetching predicted text:', error);
         });
     }
 

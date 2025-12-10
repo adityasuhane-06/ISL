@@ -32,7 +32,33 @@ alphabet = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 alphabet += list(string.ascii_uppercase)
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24) # Needed for session management
+# Use a fixed secret key for production (or from environment variable)
+app.secret_key = os.environ.get('SECRET_KEY', 'sign-sarthi-isl-detection-platform-2024-production-key')
+
+# Configure session to work better in production
+app.config.update(
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=False,  # Set to True if using HTTPS
+    SESSION_COOKIE_HTTPONLY=True,
+    PERMANENT_SESSION_LIFETIME=3600  # 1 hour
+)
+
+# Simple global variable for predicted text - works for single-user demo
+# In production with multiple users, you'd need Redis or similar
+global_predicted_text = ""
+
+def get_predicted_text():
+    """Get predicted text from global variable"""
+    global global_predicted_text
+    print(f"[GET_TEXT] Returning: '{global_predicted_text}'")
+    return global_predicted_text
+
+def set_predicted_text(text):
+    """Set predicted text in global variable"""
+    global global_predicted_text
+    global_predicted_text = text
+    print(f"[SET_TEXT] Setting text to: '{text}'")
+    return text
 
 # Function to calculate the landmark points of hands for detections
 def calc_landmark_list(image, landmarks):
@@ -190,6 +216,15 @@ def index():
 def health():
     return jsonify({"status": "healthy", "service": "Sign Sarthi ISL"}), 200
 
+@app.route('/debug_session')
+def debug_session():
+    """Debug endpoint to check state"""
+    predicted_text = get_predicted_text()
+    return jsonify({
+        "predicted_text": predicted_text,
+        "global_text": global_predicted_text
+    })
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -314,54 +349,74 @@ def video():
 
 @app.route('/add_character', methods=['POST'])
 def add_character():
-    predicted_text = session.get('predicted_text', '')
     data = request.json
     character = data.get('character', '')
-    if character:
-        predicted_text += character
-    session['predicted_text'] = predicted_text
-    return jsonify(success=True)
+    # Accept current_text from frontend for better sync
+    frontend_text = data.get('current_text', None)
+    
+    if frontend_text is not None:
+        # Frontend sent its current text, use it as source of truth
+        current_text = frontend_text
+        print(f"[ADD_CHARACTER] Using frontend text: '{current_text}'")
+    else:
+        # Fallback to server state
+        current_text = get_predicted_text()
+        if character:
+            current_text += character
+        print(f"[ADD_CHARACTER] Using server text + char: '{current_text}'")
+    
+    set_predicted_text(current_text)
+    return jsonify(success=True, predicted_text=current_text)
 
 
 # Route to get the current predicted text
 @app.route('/get_predicted_text', methods=['GET'])
-def get_predicted_text():
-    predicted_text = session.get('predicted_text', '')
-    return jsonify(predicted_text=predicted_text)
+def get_predicted_text_route():
+    current_text = get_predicted_text()
+    print(f"[GET_ROUTE] Returning predicted text: '{current_text}'")
+    return jsonify(predicted_text=current_text)
 
 
 @app.route('/clear_last_character', methods=['POST'])
 def clear_last_character():
-    predicted_text = session.get('predicted_text', '')
-    if predicted_text:
-        predicted_text = predicted_text[:-1]
-    session['predicted_text'] = predicted_text
-    return jsonify(predicted_text=predicted_text)
+    current_text = get_predicted_text()
+    print(f"[CLEAR_LAST] Before: '{current_text}'")
+    if current_text:
+        current_text = current_text[:-1]
+    set_predicted_text(current_text)
+    print(f"[CLEAR_LAST] After: '{current_text}'")
+    return jsonify(predicted_text=current_text)
 
 
 
 @app.route('/speak_sentence', methods=['POST'])
 def speak_sentence():
-    predicted_text = session.get('predicted_text', '')
-    engine = pyttsx3.init()
-    engine.say(predicted_text)
-    engine.runAndWait()
-    return '', 204
+    current_text = get_predicted_text()
+    try:
+        engine = pyttsx3.init()
+        engine.say(current_text)
+        engine.runAndWait()
+    except Exception as e:
+        print(f"Text-to-speech error: {e}")
+        # TTS might not work in deployment, but don't fail the request
+    return jsonify(success=True, predicted_text=current_text)
 
 # Route to clear the entire predicted sentence
 @app.route('/clear_sentence', methods=['POST'])
 def clear_sentence():
-    session['predicted_text'] = ""
-    return jsonify(success=True)
+    print(f"[CLEAR_SENTENCE] Before: '{get_predicted_text()}'")
+    set_predicted_text("")
+    print(f"[CLEAR_SENTENCE] After: '{get_predicted_text()}'")
+    return jsonify(success=True, predicted_text="")
 
 
 # Route to add a space in the predicted text
 @app.route('/add_space', methods=['POST'])
 def add_space():
-    predicted_text = session.get('predicted_text', '')
-    predicted_text += " "
-    session['predicted_text'] = predicted_text
-    return jsonify(predicted_text=predicted_text)
+    current_text = get_predicted_text()
+    current_text += " "
+    set_predicted_text(current_text)
+    return jsonify(predicted_text=current_text)
 
 
 if __name__ == '__main__':
