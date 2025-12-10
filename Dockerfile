@@ -24,12 +24,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the entire application
 COPY . .
 
-# Expose port 8080 (Cloud Run default)
-EXPOSE 8080
+# Expose port 7860 (Hugging Face Spaces default)
+EXPOSE 7860
 
 # Set environment variables
-ENV PORT=8080
+ENV PORT=7860
 ENV PYTHONUNBUFFERED=1
 
 # Run the application with gunicorn
-CMD exec gunicorn --bind :$PORT --workers 2 --threads 4 --timeout 120 app:app
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app

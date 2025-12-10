@@ -660,7 +660,10 @@
     let processingFrame = false;
     let previousSign = null;
     let startTime = null;
+    let lastAddedSign = null;  // Track the last added character
+    let lastAddedTime = 0;     // Track when it was added
     const detectionThreshold = 1000; // 1 second in milliseconds
+    const cooldownPeriod = 2000;     // 2 seconds cooldown between same characters
     let frameCount = 0;
 
     // Start camera
@@ -768,14 +771,27 @@
                 startTime = now;
                 predictionIndicator.style.background = 'rgba(255,165,0,0.8)'; // Orange - detecting
               } else if (now - startTime >= detectionThreshold) {
-                // Add to predicted text
-                addToPredictedText(currentSign);
-                predictionIndicator.style.background = 'rgba(0,255,0,0.9)'; // Green - added
-                // Keep showing for 500ms then reset
-                setTimeout(() => {
-                  predictionIndicator.style.background = 'rgba(0,150,255,0.8)';
-                }, 500);
+                // Check cooldown before adding
+                const timeSinceLastAdd = now - lastAddedTime;
+                const isDifferentSign = currentSign !== lastAddedSign;
+                const cooldownExpired = timeSinceLastAdd >= cooldownPeriod;
+                
+                if (isDifferentSign || cooldownExpired) {
+                  console.log(`Adding character: ${currentSign} (last: ${lastAddedSign}, cooldown: ${timeSinceLastAdd}ms)`);
+                  // Add to predicted text
+                  addToPredictedText(currentSign);
+                  lastAddedSign = currentSign;
+                  lastAddedTime = now;
+                  predictionIndicator.style.background = 'rgba(0,255,0,0.9)'; // Green - added
+                  // Keep showing for 500ms then reset
+                  setTimeout(() => {
+                    predictionIndicator.style.background = 'rgba(0,150,255,0.8)';
+                  }, 500);
+                } else {
+                  console.log(`Cooldown active: ${timeSinceLastAdd}ms < ${cooldownPeriod}ms`);
+                }
                 startTime = null;
+                previousSign = null; // Reset to allow new detection
               }
             } else {
               previousSign = currentSign;
@@ -923,8 +939,13 @@
     function clearSentence() {
       fetch('/clear_sentence', { method: 'POST' })
         .then(response => response.json())
-        .then(() => {
-          updatePredictedText();
+        .then(data => {
+          console.log('Sentence cleared:', data);
+          predictedTextElement.textContent = '';
+          // No need to fetch again - already cleared locally
+        })
+        .catch(error => {
+          console.error('Error clearing sentence:', error);
         });
     }
 
@@ -933,22 +954,72 @@
       fetch('/clear_last_character', { method: 'POST' })
         .then(response => response.json())
         .then(data => {
-          predictedTextElement.textContent = data.predicted_text;
+          console.log('Last character cleared:', data.predicted_text);
+          predictedTextElement.textContent = data.predicted_text || '';
+        })
+        .catch(error => {
+          console.error('Error clearing last character:', error);
         });
     }
 
-    // Function to send a request to speak the sentence
+    // Function to speak the sentence using browser's Web Speech API
     function speakSentence() {
-      fetch('/speak_sentence', { method: 'POST' });
+      const textToSpeak = predictedTextElement.textContent.trim();
+      
+      if (!textToSpeak) {
+        console.log('No text to speak');
+        return;
+      }
+      
+      // Check if browser supports speech synthesis
+      if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+        
+        // Create speech utterance
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;  // Slightly slower for clarity
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+        
+        console.log('Speaking text:', textToSpeak);
+        window.speechSynthesis.speak(utterance);
+        
+        // Visual feedback
+        utterance.onstart = () => {
+          console.log('Speech started');
+        };
+        
+        utterance.onend = () => {
+          console.log('Speech ended');
+        };
+        
+        utterance.onerror = (event) => {
+          console.error('Speech error:', event.error);
+        };
+      } else {
+        console.error('Speech synthesis not supported in this browser');
+        alert('Text-to-speech is not supported in your browser. Please try Chrome, Edge, or Safari.');
+      }
     }
 
     // Function to add a space in the predicted text
     function addspace() {
-      fetch('/add_space', { method: 'POST' });
+      fetch('/add_space', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Space added:', data.predicted_text);
+          predictedTextElement.textContent = data.predicted_text || '';
+        })
+        .catch(error => {
+          console.error('Error adding space:', error);
+        });
     }
 
-    // Periodically update the predicted text every second
-    setInterval(updatePredictedText, 1000);
+    // Initial update on page load only
+    // Removed periodic polling - text updates immediately when characters are added
+    updatePredictedText();
   </script>
 
 

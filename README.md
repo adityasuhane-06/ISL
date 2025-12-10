@@ -1,8 +1,16 @@
+---
+title: Sign Sarthi
+emoji: 🤟
+colorFrom: purple
+colorTo: blue
+sdk: docker
+pinned: false
+license: mit
+---
 # Sign Sarthi - Indian Sign Language Detection Platform
 
 A comprehensive web application for Indian Sign Language (ISL) recognition and translation, featuring real-time gesture detection, text-to-ISL conversion, and multi-language translation capabilities.
 
-**Live Demo:** [https://sign-sarthi-sw4dsy7i4a-uc.a.run.app](https://sign-sarthi-sw4dsy7i4a-uc.a.run.app)
 
 ## 🚀 Features
 
@@ -72,35 +80,6 @@ A comprehensive web application for Indian Sign Language (ISL) recognition and t
 
 2.  **Access the application** in your browser at `http://localhost:5000`.
 
-## ☁️ Deployment to Google Cloud
-
-This application is configured for deployment on Google Cloud Run.
-
-### Prerequisites
-
-- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) installed and configured.
-- A Google Cloud project with billing enabled.
-- Cloud Build and Cloud Run APIs enabled.
-
-### Deployment Steps
-
-1.  **Authenticate with Google Cloud:**
-    ```bash
-    gcloud auth login
-    gcloud config set project YOUR_PROJECT_ID
-    ```
-
-2.  **Run the deployment script:**
-    This script will build the Docker container using Cloud Build and deploy it to Cloud Run.
-    ```powershell
-    # Ensure you are in the project root directory
-    powershell -ExecutionPolicy Bypass -File ".\deploy-gcp.ps1"
-    ```
-
-The script handles the following:
--   Sets the project ID.
--   Builds the Docker image using `gcloud builds submit`.
--   Deploys the image to Cloud Run with specified resources (4 CPU, 4Gi memory).
 
 ## 🤝 Contributing
 
@@ -121,5 +100,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 -   **MediaPipe** for hand landmark detection.
 -   **TensorFlow** for the machine learning framework.
 -   **Flask** for the web framework.
--   **Google Cloud** for the deployment platform.
--   **Gyan Ganga Institute of Technology and Sciences**
